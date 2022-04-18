@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,21 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/login', 'login');
     Route::post('/register', 'register');
     Route::post('/logout', 'logout')->middleware('auth');
-    Route::get('/my-profile', 'getMyProfile')->middleware('auth');
+    Route::get('/authors/{id}', 'getMyGalleries')->middleware('auth');
     Route::post('/refresh', 'refreshToken');
+});
+
+Route::controller(GalleryController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/my-galleries', 'getMyGalleries');
+    Route::post('/create', 'store');
+    Route::get('/galleries/{id}', 'show');
+    //ovo vrvt nece valjati:
+    Route::put('/galleries/{id}', 'update');
+    Route::post('/galleries/{id}', 'delete');
+});
+
+Route::controller(CommentController::class)->group(function () {
+    Route::post('/galleries/{gallery}/comments', 'store');
+    Route::post('/galleries/{gallery}/comments/{id}', 'delete');
 });

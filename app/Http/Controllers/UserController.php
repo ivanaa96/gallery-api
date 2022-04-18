@@ -40,9 +40,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function getMyProfile()
+    public function getMyGalleries()
     {
-        $activeUser = Auth::user();
+        $activeUser = Auth::user()->galleries();
         return response()->json($activeUser);
     }
 
