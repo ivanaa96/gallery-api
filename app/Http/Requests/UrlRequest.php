@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class RegistrationRequest extends FormRequest
+class UrlRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +23,11 @@ class RegistrationRequest extends FormRequest
      */
     public function rules()
     {
+        $regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+
         return [
-            "first_name" => "required",
-            "last_name" => "required",
-            "email" =>  "required|email",
-            "password" => ["confirmed", "min:8", Password::min(8)->numbers()],
-            "terms_and_conditions" =>  "accepted|required|",
+            'url' => 'required|ends_with:jpg,jpeg,png|url|regex:' . $regex,
+            'order' => 'integer',
         ];
     }
 }
