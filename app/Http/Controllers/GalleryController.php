@@ -26,22 +26,24 @@ class GalleryController extends Controller
 
     public function store(StoreGalleryRequest $request)
     {
+        $image_urls = $request->get('image_urls', []);
+
         $gallery = Auth::user()->galleries()->create([
             'title' => $request->title,
             'description' => $request->description,
-            'user_id' => Auth::user()->id,
         ]);
 
-        $list =  ListOfImages::create([
-            'gallery_id' => $gallery->id,
-        ]);
-
-        foreach ($request->url as $image) {
-            $list->create(['url' => $image]);
+        $order = 1;
+        foreach ($image_urls as $image) {
+            $gallery->images()->create([
+                'url' => $image['url'],
+                'order' => $order
+            ]);
+            $order++;
         }
 
-        $result = array_merge($gallery, $list);
-        return response()->json($result);
+        $gallery->load('images');
+        return response()->json($gallery);
     }
 
     public function update(StoreGalleryRequest $request, Gallery $gallery)

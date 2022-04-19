@@ -26,6 +26,8 @@ class StoreGalleryRequest extends FormRequest
         return [
             'title' => "required|min:2|max:255",
             'description' => "sometimes|max:1000",
+            'image_urls' => "required|array",
+            'image_urls.*.url' => 'required|url|ends_with:jpg,jpeg,png',
         ];
     }
 }

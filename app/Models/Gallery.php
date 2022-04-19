@@ -25,8 +25,8 @@ class Gallery extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function list()
+    public function images()
     {
-        return $this->hasOne(ListOfImages::class);
+        return $this->hasMany(Image::class);
     }
 }

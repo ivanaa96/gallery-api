@@ -32,11 +32,11 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(GalleryController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/my-galleries', 'getMyGalleries');
-    Route::post('/create', 'store');
+    Route::post('/create', 'store')->middleware('auth');
     Route::get('/galleries/{id}', 'show');
     //ovo vrvt nece valjati:
     Route::put('/galleries/{id}', 'update');
-    Route::post('/galleries/{id}', 'delete');
+    Route::delete('/galleries/{id}', 'delete');
 });
 
 Route::controller(CommentController::class)->group(function () {
