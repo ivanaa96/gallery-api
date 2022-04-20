@@ -33,7 +33,7 @@ Route::controller(GalleryController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/my-galleries', 'getMyGalleries');
     Route::post('/create', 'store')->middleware('auth');
-    Route::get('/galleries/{id}', 'show');
+    Route::get('/galleries/{id}', 'show')->middleware('auth');
     //ovo vrvt nece valjati:
     Route::put('/galleries/{id}', 'update');
     Route::delete('/galleries/{id}', 'delete');
@@ -41,5 +41,5 @@ Route::controller(GalleryController::class)->group(function () {
 
 Route::controller(CommentController::class)->group(function () {
     Route::post('/galleries/{gallery}/comments', 'store');
-    Route::post('/galleries/{gallery}/comments/{id}', 'delete');
+    Route::delete('/galleries/{gallery}/comments/{id}', 'delete');
 });

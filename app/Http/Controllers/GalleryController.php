@@ -13,14 +13,13 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        // $galleries = Gallery::all();
-        $galleries = Gallery::with('comments', 'user')->paginate(10);
+        $galleries = Gallery::with('comments', 'user', 'images')->orderBy('id', 'desc')->paginate(10);
         return response()->json($galleries);
     }
 
     public function show(Gallery $id)
     {
-        $data = $id->load(['comments']);
+        $data = $id->load(['comments', 'images', 'user']);
         return response()->json($data);
     }
 
