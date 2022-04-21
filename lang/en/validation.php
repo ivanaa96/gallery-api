@@ -145,8 +145,12 @@ return [
             'rule-name' => 'custom-message',
         ],
         "image_urls.*.url" => [
+            'required' => "You have to enter at least one image URL.",
             'url' => "The url must be a valid URL.",
             'ends_with' => " The url must end with one of the following: jpg, jpeg, png.",
+        ],
+        "email" => [
+            'unique' => "User with this email address already exists.",
         ]
     ],
 

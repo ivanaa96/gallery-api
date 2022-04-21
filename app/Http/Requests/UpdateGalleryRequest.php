@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class RegistrationRequest extends FormRequest
+class UpdateGalleryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +24,10 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            "first_name" => "required",
-            "last_name" => "required",
-            "email" =>  "required|email|unique:users",
-            "password" => ["confirmed", "min:8", Password::min(8)->numbers()],
-            "terms_and_conditions" =>  "accepted|required|",
+            'title' => "sometimes|min:2|max:255",
+            'description' => "sometimes|max:1000",
+            'image_urls' => "sometimes|array",
+            'image_urls.*.url' => 'sometimes|url|ends_with:jpg,jpeg,png',
         ];
     }
 }

@@ -22,9 +22,9 @@ class CommentController extends Controller
         return response()->json($comment);
     }
 
-    public function delete(Comment $comment)
+    public function delete(Gallery $gallery, Comment $id)
     {
-        $comment->delete();
+        $id->delete();
         return response()->noContent();
     }
 }

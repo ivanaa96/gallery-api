@@ -8,18 +8,27 @@ use App\Models\User;
 use App\Http\Requests\StoreGalleryRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Requests\UpdateGalleryRequest;
+
 
 class GalleryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $galleries = Gallery::with('comments', 'user', 'images')->orderBy('id', 'desc')->paginate(10);
+        // /api/galleries?filter=asdf
+        $filter = $request->query('filter');
+        $query = Gallery::with('comments', 'user', 'images')->orderBy('id', 'desc');
+
+        if ($filter) {
+            $query->where('title', 'like', "%$filter%")->orWhere('description', 'like', "%$filter%");
+        }
+        $galleries = $query->paginate(10);
         return response()->json($galleries);
     }
 
     public function show(Gallery $id)
     {
-        $data = $id->load(['comments', 'images', 'user']);
+        $data = $id->load(['comments.user', 'images', 'user']);
         return response()->json($data);
     }
 
@@ -45,16 +54,18 @@ class GalleryController extends Controller
         return response()->json($gallery);
     }
 
-    public function update(StoreGalleryRequest $request, Gallery $gallery)
+    public function update(UpdateGalleryRequest $request, Gallery $gallery)
     {
+        info($request);
+        info($gallery);
         $data = $request->validated();
         $gallery->update($data);
         return response()->json($gallery);
     }
 
-    public function delete(Gallery $id)
+    public function delete(Gallery $gallery)
     {
-        $id->delete();
+        $gallery->delete();
         return response()->noContent();
     }
 
@@ -69,5 +80,11 @@ class GalleryController extends Controller
         $user = User::findOrFail($id);
         $user->load(['galleries.images']);
         return response()->json($user);
+    }
+
+    public function getMyProfile()
+    {
+        $activeUser = Auth::user();
+        return response()->json($activeUser);
     }
 }
