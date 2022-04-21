@@ -37,6 +37,7 @@ Route::controller(GalleryController::class)->group(function () {
     //ovo vrvt nece valjati:
     Route::put('/galleries/{id}', 'update');
     Route::delete('/galleries/{id}', 'delete');
+    Route::get('/authors/{id}', 'getAuthorsGalleries')->middleware('auth');
 });
 
 Route::controller(CommentController::class)->group(function () {

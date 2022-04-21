@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Gallery;
-use App\Models\ListOfImages;
+use App\Models\User;
 use App\Http\Requests\StoreGalleryRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -60,7 +60,14 @@ class GalleryController extends Controller
 
     public function getMyGalleries()
     {
-        $galleries = Auth::user()->galleries()->get();
+        $galleries = Auth::user()->load(['galleries.images']);
         return response()->json($galleries);
+    }
+
+    public function getAuthorsGalleries($id)
+    {
+        $user = User::findOrFail($id);
+        $user->load(['galleries.images']);
+        return response()->json($user);
     }
 }

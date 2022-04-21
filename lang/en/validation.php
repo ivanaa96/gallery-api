@@ -144,6 +144,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        "image_urls.*.url" => [
+            'url' => "The url must be a valid URL.",
+            'ends_with' => " The url must end with one of the following: jpg, jpeg, png.",
+        ]
     ],
 
     /*
