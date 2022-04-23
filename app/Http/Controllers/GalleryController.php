@@ -9,6 +9,7 @@ use App\Http\Requests\StoreGalleryRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\UpdateGalleryRequest;
+use Illuminate\Support\Facades\DB;
 
 
 class GalleryController extends Controller
@@ -20,8 +21,9 @@ class GalleryController extends Controller
         $query = Gallery::with('comments', 'user', 'images')->orderBy('id', 'desc');
 
         if ($filter) {
-            $query->where('title', 'like', "%$filter%")->orWhere('description', 'like', "%$filter%");
+            $query->where('title', 'like', "%$filter%")->orWhere('description', 'like', "%$filter%")->get();
         }
+
         $galleries = $query->paginate(10);
         return response()->json($galleries);
     }
@@ -56,10 +58,18 @@ class GalleryController extends Controller
 
     public function update(UpdateGalleryRequest $request, Gallery $gallery)
     {
-        info($request);
-        info($gallery);
-        $data = $request->validated();
-        $gallery->update($data);
+        $image_urls = $request->get('image_urls', []);
+        $gallery->update([
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        foreach ($image_urls as $image) {
+            $gallery->images()->update([
+                'url' => $image['url'],
+            ]);
+        }
+
         return response()->json($gallery);
     }
 

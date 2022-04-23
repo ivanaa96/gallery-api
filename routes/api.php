@@ -26,7 +26,6 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/logout', 'logout')->middleware('auth');
     Route::get('/authors/{id}', 'getMyGalleries')->middleware('auth');
-    Route::post('/refresh', 'refreshToken');
 });
 
 Route::controller(GalleryController::class)->group(function () {
@@ -34,12 +33,11 @@ Route::controller(GalleryController::class)->group(function () {
     Route::get('/my-galleries', 'getMyGalleries');
     Route::post('/create', 'store')->middleware('auth');
     Route::get('/galleries/{id}', 'show');
-    //ovo vrvt nece valjati:
     Route::put('/edit-gallery/{gallery}', 'update')->middleware('auth');
     Route::delete('/galleries/{gallery}', 'delete')->middleware('auth');
     Route::get('/authors/{id}', 'getAuthorsGalleries')->middleware('auth');
-    Route::get('/authors/{id}', 'getAuthorsGalleries')->middleware('auth');
     Route::get('/my-profile', 'getMyProfile')->middleware('auth');
+    Route::get("/galleries", "index")->middleware('auth');
 });
 
 Route::controller(CommentController::class)->group(function () {

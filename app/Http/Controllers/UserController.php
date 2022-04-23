@@ -51,18 +51,4 @@ class UserController extends Controller
         Auth::logout();
         return response()->noContent();
     }
-
-    public function refreshToken()
-    {
-        try {
-            $token = Auth::refresh();
-            return [
-                'token' => $token,
-            ];
-        } catch (UserNotDefinedException $exception) {
-            return response()->json([
-                'message' => 'Invalid token',
-            ], 401);
-        }
-    }
 }
