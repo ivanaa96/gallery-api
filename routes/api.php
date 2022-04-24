@@ -32,7 +32,7 @@ Route::controller(GalleryController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/my-galleries', 'getMyGalleries');
     Route::post('/create', 'store')->middleware('auth');
-    Route::get('/galleries/{id}', 'show');
+    Route::get('/galleries/{id}', 'show')->middleware('auth');
     Route::put('/edit-gallery/{gallery}', 'update')->middleware('auth');
     Route::delete('/galleries/{gallery}', 'delete')->middleware('auth');
     Route::get('/authors/{id}', 'getAuthorsGalleries')->middleware('auth');
