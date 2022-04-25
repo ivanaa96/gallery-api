@@ -18,13 +18,18 @@ class GalleryController extends Controller
     public function index(Request $request)
     {
         $filter = $request->query('filter');
-        $query = Gallery::with('comments', 'user', 'images')->orderBy('id', 'desc');
+        $query = Gallery::with('comments', 'user', 'images');
 
         if ($filter) {
-            $query->where('title', 'like', "%$filter%")->orWhere('description', 'like', "%$filter%")->get();
+            $query = $query->where('title', 'like', "%$filter%")
+                ->orWhere('description', 'like', "%$filter%")
+                ->orWhereHas('user', function ($user) use ($filter) {
+                    $user->where('first_name', 'like', "%$filter%")
+                        ->orWhere('last_name', 'like', "%$filter%");
+                });
         }
 
-        $galleries = $query->paginate(10);
+        $galleries = $query->orderBy('id', 'desc')->paginate(10);
         return response()->json($galleries);
     }
 
