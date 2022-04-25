@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Gallery;
 use App\Models\User;
 use App\Models\Image;
-
 use App\Http\Requests\StoreGalleryRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
