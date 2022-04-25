@@ -18,7 +18,6 @@ class GalleryController extends Controller
 {
     public function index(Request $request)
     {
-        // /api/galleries?filter=asdf
         $filter = $request->query('filter');
         $query = Gallery::with('comments', 'user', 'images')->orderBy('id', 'desc');
 
@@ -69,7 +68,7 @@ class GalleryController extends Controller
         $previous = Image::where('gallery_id', '=', $request->gallery_id)->max('order');
 
         foreach ($image_urls as $image) {
-            $gallery->images()->update([
+            $gallery->images()->create([
                 'url' => $image['url'],
                 'order' => $previous++,
             ]);
