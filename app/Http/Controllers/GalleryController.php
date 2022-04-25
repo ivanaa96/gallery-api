@@ -66,11 +66,12 @@ class GalleryController extends Controller
         ]);
 
         $previous = Image::where('gallery_id', '=', $request->gallery_id)->max('order');
+        $newOrder = $previous + 1;
 
         foreach ($image_urls as $image) {
             $gallery->images()->create([
                 'url' => $image['url'],
-                'order' => $previous++,
+                'order' => $newOrder++,
             ]);
         }
 
