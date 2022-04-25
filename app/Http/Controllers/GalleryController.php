@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Gallery;
 use App\Models\User;
+use App\Models\Image;
+
 use App\Http\Requests\StoreGalleryRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -64,9 +66,12 @@ class GalleryController extends Controller
             'description' => $request->description,
         ]);
 
+        $previous = Image::where('gallery_id', '=', $request->gallery_id)->max('order');
+
         foreach ($image_urls as $image) {
             $gallery->images()->update([
                 'url' => $image['url'],
+                'order' => $previous++,
             ]);
         }
 
